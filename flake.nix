@@ -57,6 +57,13 @@
             default = pkg;
             description = "The fjord / wormhole package to use.";
           };
+          daemon = {
+            enable = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Whether to start Wormhole daemon with graphical-session.target.";
+            };
+          };
         };
 
         options.programs.wormhole = {
@@ -66,10 +73,51 @@
             default = pkg;
             description = "The fjord / wormhole package to use.";
           };
+          daemon = {
+            enable = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Whether to start Wormhole daemon with graphical-session.target.";
+            };
+          };
         };
 
         config = mkIf enabled {
           home.packages = [ activeCfg.package ];
+
+          xdg.portal = {
+            enable = true;
+            extraPortals = [ activeCfg.package ];
+            config = {
+              common.default = [ "wormhole" "hyprland" "gtk" ];
+              hyprland = {
+                default = [ "wormhole" "hyprland" "gtk" ];
+                "org.freedesktop.impl.portal.ScreenCast" = "wormhole";
+                "org.freedesktop.impl.portal.Screenshot" = "wormhole";
+                "org.freedesktop.impl.portal.FileChooser" = "wormhole";
+                "org.freedesktop.impl.portal.AppChooser" = "wormhole";
+                "org.freedesktop.impl.portal.Access" = "wormhole";
+                "org.freedesktop.impl.portal.DynamicLauncher" = "wormhole";
+                "org.freedesktop.impl.portal.Wallpaper" = "wormhole";
+              };
+            };
+          };
+
+          systemd.user.services.xdg-desktop-portal-wormhole = mkIf activeCfg.daemon.enable {
+            Unit = {
+              Description = "Wormhole Material 3 Desktop Portal";
+              PartOf = [ "graphical-session.target" ];
+              After = [ "graphical-session.target" ];
+            };
+            Service = {
+              ExecStart = "${activeCfg.package}/bin/wormhole --daemon";
+              Restart = "on-failure";
+              RestartSec = "1s";
+            };
+            Install = {
+              WantedBy = [ "graphical-session.target" ];
+            };
+          };
         };
       };
   };
