@@ -41,6 +41,45 @@
       };
     });
 
+    nixosModules.default = { config, lib, pkgs, ... }:
+      with lib;
+      let
+        pkg = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        cfg = config.programs.fjord;
+      in {
+        options.programs.fjord = {
+          enable = mkEnableOption "Fjord (Wormhole) Material 3 Expressive XDG Desktop Portal integration";
+          package = mkOption {
+            type = types.package;
+            default = pkg;
+            description = "The fjord / wormhole package to use.";
+          };
+        };
+
+        config = mkIf cfg.enable {
+          environment.systemPackages = [ cfg.package ];
+
+          xdg.portal = {
+            enable = true;
+            extraPortals = [ cfg.package ];
+            config = {
+              common.default = mkDefault [ "wormhole" "hyprland" "gtk" ];
+              hyprland = {
+                default = mkDefault [ "wormhole" "hyprland" "gtk" ];
+                "org.freedesktop.impl.portal.ScreenCast" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.Screenshot" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.FileChooser" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.AppChooser" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.Access" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.DynamicLauncher" = mkDefault "wormhole";
+                "org.freedesktop.impl.portal.Wallpaper" = mkDefault "wormhole";
+              };
+            };
+          };
+        };
+      };
+    nixosModules.fjord = self.nixosModules.default;
+
     homeManagerModules.default = { config, lib, pkgs, ... }:
       with lib;
       let
