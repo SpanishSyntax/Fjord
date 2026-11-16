@@ -1,0 +1,33 @@
+- **Getting Started**
+  - [Overview](README.md)
+  - [Installation](getting-started.md#installation)
+  - [Nix Flake & Home Manager](getting-started.md#nix-flake--home-manager)
+  - [Manual Compilation](getting-started.md#manual-compilation-from-source)
+  - [D-Bus Portal Configuration](getting-started.md#d-bus-portal-configuration)
+  - [Systemd User Service](getting-started.md#systemd-user-service)
+  - [Verification & Status](getting-started.md#verification--daemon-status)
+
+- **Architecture & Design**
+  - [System Architecture](architecture.md#system-architecture)
+  - [The Lore: Glacial Conduit](architecture.md#why-fjord--wormhole-the-lore)
+  - [D-Bus Daemon & Request Lifecycle](architecture.md#xdg-desktop-portal-d-bus-lifecycle)
+  - [Wayland Protocol Code Generation](architecture.md#wayland-protocols--code-generation)
+  - [PipeWire Stream Node Architecture](architecture.md#pipewire-stream-node-architecture)
+  - [Hyprland IPC Client Discovery](architecture.md#hyprland-ipc-client-discovery)
+  - [Material 3 Expressive QML Engine](architecture.md#material-3-expressive-qml-engine)
+
+- **Portal Interfaces**
+  - [Complete Suite Overview](usage.md#complete-suite-overview)
+  - [ScreenCast & Window Capture](usage.md#screencast-sharing)
+  - [Screenshot & Pixel Color Picker](usage.md#screenshot--color-picker)
+  - [Material 3 FileChooser](usage.md#filechooser-dialog)
+  - [Application Chooser](usage.md#application-chooser)
+  - [Security & Permission Prompts](usage.md#security-permissions--access)
+  - [Dynamic Launcher & Web Apps](usage.md#dynamic-launcher)
+  - [Wallpaper Preview](usage.md#wallpaper-preview)
+  - [System Service Portals](usage.md#system-service-portals)
+
+- **CLI & Daemon Testing**
+  - [CLI Testing Triggers](usage.md#cli-testing-triggers)
+  - [Command Reference](usage.md#command-line-options)
+  - [Debugging & Trace Logging](usage.md#debugging--trace-logging)
