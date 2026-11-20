@@ -163,21 +163,15 @@ Fjord streams captured video frames to sandboxed applications through PipeWire.
 
 ### Stream Negotiation Lifecycle
 
-```
-[Fjord: PipeWireStreamManager]
-       │
-       ├─► 1. pw_init() & pw_context_new()
-       ├─► 2. pw_core_connect() to PipeWire daemon
-       ├─► 3. pw_stream_new("wormhole-screencast", PW_DIRECTION_OUTPUT)
-       │
-[Format Negotiation]
-       ├─► 4. Announce SPA_MEDIA_TYPE_video / SPA_MEDIA_SUBTYPE_raw
-       ├─► 5. Propose formats: SPA_VIDEO_FORMAT_BGRx, SPA_VIDEO_FORMAT_RGBx, SPA_VIDEO_FORMAT_RGBA
-       │
-[Buffer Delivery]
-       ├─► 6. Obtain PipeWire node ID (pw_stream_get_node_id)
-       ├─► 7. Return node ID to client over D-Bus
-       └─► 8. Push frames into PipeWire ring buffer on each Wayland frame ready
+```mermaid
+flowchart TD
+    Init["1. pw_init() and pw_context_new()"] --> Connect["2. pw_core_connect() to PipeWire daemon"]
+    Connect --> Stream["3. pw_stream_new(wormhole-screencast, PW_DIRECTION_OUTPUT)"]
+    Stream --> Announce["4. Announce SPA_MEDIA_TYPE_video / SPA_MEDIA_SUBTYPE_raw"]
+    Announce --> Formats["5. Propose formats: BGRx, RGBx, RGBA"]
+    Formats --> NodeId["6. Obtain PipeWire node ID (pw_stream_get_node_id)"]
+    NodeId --> DbusRet["7. Return node ID to client over D-Bus"]
+    DbusRet --> Push["8. Push frames into PipeWire ring buffer on Wayland frame ready"]
 ```
 
 Applications (such as WebRTC in Firefox or Chromium) receive the PipeWire node ID and connect directly to the multimedia stream, offloading rendering and encoding to the GPU.
