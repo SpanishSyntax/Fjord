@@ -21,7 +21,7 @@ flowchart TD
     end
 
     subgraph FjordDaemon["Fjord Backend (wormhole --daemon)"]
-        DBUS["D-Bus Implementation Layer<br/>org.freedesktop.impl.portal.desktop.wormhole"]
+        DBUS["D-Bus Implementation Layer (org.freedesktop.impl.portal.desktop.wormhole)"]
         CORE["AppController & Session Manager"]
         RESTORE["RestoreStore (Token Persistence)"]
         PW["PipeWireStreamManager"]
